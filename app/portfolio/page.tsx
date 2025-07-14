@@ -100,7 +100,7 @@ export default function Portfolio() {
                     <div className="text-center">
                         <h1 className="text-4xl font-light text-gray-900 mb-3">Portfolio Gallery</h1>
                         <p className="text-gray-600 max-w-2xl mx-auto">
-                            Capturing life's most precious moments with artistic vision and professional excellence
+                            Capturing life&rsquo;s most precious moments with artistic vision and professional excellence
                         </p>
                     </div>
                 </div>
