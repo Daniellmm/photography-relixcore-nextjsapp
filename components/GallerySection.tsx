@@ -4,6 +4,7 @@ import weddingSample from "../public/assets/wedding-sample.jpg";
 import portraitSample from "../public/assets/portrait-sample.jpg";
 import eventSample from "../public/assets/event-sample.jpg";
 import Image from "next/image";
+import Link from "next/link";
 
 const galleryImages = [
     { src: weddingSample, alt: "Wedding Photography" },
@@ -42,9 +43,11 @@ export default function GallerySection() {
                 </div>
 
                 <div className="text-center mt-12">
-                    <button className="border-2 border-primary px-8 py-3 font-medium hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
-                        View Full Portfolio
-                    </button>
+                    <Link href="/portfolio">
+                        <button className="border-2 rounded-md  border-white px-8 py-3 font-medium hover:bg-white/20 hover:text-primary-foreground transition-colors duration-300">
+                            View Full Portfolio
+                        </button>
+                    </Link>
                 </div>
             </div>
         </section>

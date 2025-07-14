@@ -1,3 +1,5 @@
+'use client'
+
 import CategoriesSection from "@/components/CategoriesSection";
 import ContactSection from "@/components/ContactSection";
 import GallerySection from "@/components/GallerySection";
