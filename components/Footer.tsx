@@ -11,7 +11,7 @@ export default function Footer() {
                     <div>
                         <h3 className="text-2xl font-bold mb-4">Photography Studio</h3>
                         <p className="text-primary-foreground/80 mb-4">
-                            Capturing life's most precious moments with artistry and passion.
+                            Capturing life&rsquo;s most precious moments with artistry and passion.
                         </p>
                         <div className="flex space-x-4">
                             <a href="#" className="hover:text-primary-foreground/80 transition-colors">

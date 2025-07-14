@@ -45,7 +45,7 @@ export default function ContactSection() {
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
                     <p className="text-foreground/80 text-lg max-w-2xl mx-auto">
-                        Ready to capture your special moments? Let's discuss your photography needs
+                        Ready to capture your special moments? Let&rsquo;s discuss your photography needs
                     </p>
                 </div>
 
@@ -53,10 +53,10 @@ export default function ContactSection() {
                     {/* Contact Info */}
                     <div className="space-y-8">
                         <div>
-                            <h3 className="text-2xl font-semibold mb-6">Let's Connect</h3>
+                            <h3 className="text-2xl font-semibold mb-6">Let&rsquo;s Connect</h3>
                             <p className="text-foreground/80 mb-8">
-                                I'd love to hear about your upcoming project and how I can help bring your vision to life.
-                                Reach out and let's create something beautiful together.
+                                I&rsquo;d love to hear about your upcoming project and how I can help bring your vision to life.
+                                Reach out and let&rsquo;s create something beautiful together.
                             </p>
                         </div>
 
