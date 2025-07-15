@@ -68,7 +68,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link
-              href="/login"
+              href="/auth/login"
               onClick={() => setIsOpen(false)}
               className="bg-black text-white text-center py-2 rounded-md text-sm hover:bg-gray-800 transition"
             >
