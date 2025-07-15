@@ -35,7 +35,7 @@ const Navbar = () => {
           ))}
 
           <Link
-            href="/login"
+            href="/auth/signin"
             className="bg-black text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition"
           >
             Login

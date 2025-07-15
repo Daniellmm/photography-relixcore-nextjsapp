@@ -13,7 +13,17 @@ export const config = {
   },
 };
 
-async function streamUpload(buffer: Buffer, filename: string) {
+type CloudinaryUploadResult = {
+  public_id: string;
+  secure_url: string;
+  url?: string;
+  format?: string;
+  created_at?: string;
+  // add any other fields you care about
+};
+
+
+async function streamUpload(buffer: Buffer, filename: string): Promise<CloudinaryUploadResult> {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
@@ -33,17 +43,18 @@ async function streamUpload(buffer: Buffer, filename: string) {
       },
       (error, result) => {
         if (error) return reject(error);
-        resolve(result);
+        resolve(result as CloudinaryUploadResult); // cast to our type
       }
     );
 
     const readable = new Readable();
-    readable._read = () => {};
+    readable._read = () => { };
     readable.push(buffer);
     readable.push(null);
     readable.pipe(stream);
   });
 }
+
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -61,7 +72,8 @@ export async function POST(req: NextRequest) {
   for (const file of files) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const uploadResult: any = await streamUpload(buffer, file.name);
+    const uploadResult: CloudinaryUploadResult = await streamUpload(buffer, file.name);
+
 
     const newImage = await Image.create({
       url: uploadResult.secure_url,
