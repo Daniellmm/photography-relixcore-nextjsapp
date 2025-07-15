@@ -19,7 +19,7 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="text-xl font-semibold text-gray-900">
-          RelixCore
+          RelixC<span className=' rounded-full p-0 text-red-600 font-bold'>o</span>re
         </Link>
 
         {/* Desktop Links */}

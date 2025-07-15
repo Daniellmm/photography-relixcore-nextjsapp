@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { Filter } from 'lucide-react';
 import Image from 'next/image';
-import Lightbox  from '../../components/Lightbox'
+import Lightbox  from '../../../components/Lightbox'
 import { Button } from '@/components/ui/button';
 
 interface ImageData {
