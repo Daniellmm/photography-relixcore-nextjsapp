@@ -1,21 +1,45 @@
-// lib/db.ts
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) throw new Error("MONGODB_URI is not defined");
+if (!MONGODB_URI) {
+  throw new Error('MONGODB_URI is not defined');
+}
 
-const cached = (global as any).mongoose || { conn: null, promise: null };
+// Extend global to store mongoose cache
+declare global {
+  var mongooseCache: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+}
 
-export async function connectDB() {
-  if (cached.conn) return cached.conn;
+// Prevent reinitializing during hot reloads in development
+const globalWithCache = globalThis as typeof globalThis & {
+  mongooseCache?: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+};
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
+if (!globalWithCache.mongooseCache) {
+  globalWithCache.mongooseCache = {
+    conn: null,
+    promise: null,
+  };
+}
+
+export async function connectDB(): Promise<typeof mongoose> {
+  const cache = globalWithCache.mongooseCache!;
+
+  if (cache.conn) return cache.conn;
+
+  if (!cache.promise) {
+    cache.promise = mongoose.connect(MONGODB_URI as string, {
       bufferCommands: false,
-    }).then(m => m);
+    });
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  cache.conn = await cache.promise;
+  return cache.conn;
 }
