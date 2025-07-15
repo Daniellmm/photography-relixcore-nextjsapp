@@ -5,13 +5,12 @@ import { Image } from '@/models/Image';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Readable } from 'stream';
-// import streamifier from 'streamifier';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 type CloudinaryUploadResult = {
   public_id: string;
@@ -33,17 +32,18 @@ async function streamUpload(buffer: Buffer, filename: string): Promise<Cloudinar
           {
             overlay: {
               font_family: 'Arial',
-              font_size: 60,
+              font_size: 90,
               text: 'RelixCore',
+              color: 'white'
             },
             gravity: 'center',
-            opacity: 40,
+            opacity: 50,
           },
         ],
       },
       (error, result) => {
         if (error) return reject(error);
-        resolve(result as CloudinaryUploadResult); // cast to our type
+        resolve(result as CloudinaryUploadResult);
       }
     );
 
@@ -86,5 +86,5 @@ export async function POST(req: NextRequest) {
     uploadedImages.push(newImage);
   }
 
-  return NextResponse.json({ success: true, images: uploadedImages });
+  return NextResponse.json({ success: true, images: uploadedImages, imageIds: uploadedImages.map(img => img._id) });
 }

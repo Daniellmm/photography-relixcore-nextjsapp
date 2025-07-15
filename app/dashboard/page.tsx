@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,54 +8,15 @@ import { Calendar, Download, CreditCard, Image as ImageIcon } from 'lucide-react
 import Image from 'next/image';
 
 interface Album {
-    id: number;
+    _id: string;
     name: string;
     eventDate: string;
-    thumbnail: string;
+    thumbnailUrl: string;
     isPaid: boolean;
     photoCount: number;
     eventType: string;
 }
 
-
-const mockAlbums: Album[] = [
-    {
-        id: 1,
-        name: "Sarah & Michael's Wedding",
-        eventDate: "2024-06-15",
-        thumbnail: '/assets/wedding-sample.jpg',
-        isPaid: true,
-        photoCount: 247,
-        eventType: "Wedding"
-    },
-    {
-        id: 2,
-        name: "Emma's 5th Birthday Party",
-        eventDate: "2024-05-22",
-        thumbnail: '/assets/event-sample.jpg',
-        isPaid: false,
-        photoCount: 89,
-        eventType: "Birthday"
-    },
-    {
-        id: 3,
-        name: "TechCorp Annual Conference",
-        eventDate: "2024-04-10",
-        thumbnail: '/assets/portrait-sample.jpg',
-        isPaid: true,
-        photoCount: 156,
-        eventType: "Corporate Event"
-    },
-    {
-        id: 4,
-        name: "Anniversary Celebration",
-        eventDate: "2024-03-18",
-        thumbnail: '/assets/wedding-sample.jpg',
-        isPaid: false,
-        photoCount: 94,
-        eventType: "Anniversary"
-    }
-];
 
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -66,15 +27,24 @@ const formatDate = (dateString: string) => {
 };
 
 export default function Dashboard() {
-    const handlePayment = (albumId: number) => {
-        // Handle payment logic here
+
+
+    const [albums, setAlbums] = useState<Album[]>([]);
+    useEffect(() => {
+        fetch('/api/albums')
+            .then((res) => res.json())
+            .then((data) => setAlbums(data));
+    }, []);
+
+
+    const handlePayment = (albumId: string) => {
         console.log(`Initiating payment for album ${albumId}`);
     };
 
-    const handleDownload = (albumId: number) => {
-        // Handle download logic here
+    const handleDownload = (albumId: string) => {
         console.log(`Downloading album ${albumId}`);
     };
+
 
     return (
         <div className="min-h-screen bg-gallery-bg">
@@ -82,17 +52,17 @@ export default function Dashboard() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-6">
                     <p className="text-muted-foreground">
-                        {mockAlbums.length} album{mockAlbums.length !== 1 ? 's' : ''} available
+                        {albums.length} album{albums.length !== 1 ? 's' : ''} available
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mockAlbums.map((album) => (
-                        <Card key={album.id} className="overflow-hidden hover:shadow-lg py-0 transition-shadow duration-300">
+                    {albums.map((album) => (
+                        <Card key={album._id} className="overflow-hidden hover:shadow-lg py-0 transition-shadow duration-300">
                             <CardHeader className="p-0">
                                 <div className="relative aspect-square overflow-hidden">
                                     <Image
-                                        src={album.thumbnail}
+                                        src={album.thumbnailUrl}
                                         height={400}
                                         width={400}
                                         alt={album.name}
@@ -136,7 +106,7 @@ export default function Dashboard() {
                             <CardFooter className="p-6 pt-0">
                                 {album.isPaid ? (
                                     <Button
-                                        onClick={() => handleDownload(album.id)}
+                                        onClick={() => handleDownload(album._id)}
                                         className="w-full"
                                         variant="default"
                                     >
@@ -146,7 +116,7 @@ export default function Dashboard() {
                                 ) : (
                                     <Button
                                         disabled
-                                        onClick={() => handlePayment(album.id)}
+                                        onClick={() => handlePayment(album._id)}
                                         className="w-full text-white"
                                         variant="outline"
                                     >
@@ -160,7 +130,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Empty State */}
-                {mockAlbums.length === 0 && (
+                {albums.length === 0 && (
                     <div className="text-center py-12">
                         <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-foreground mb-2">No albums yet</h3>
