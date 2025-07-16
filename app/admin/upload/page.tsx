@@ -373,6 +373,9 @@ export default function UploadPage() {
                   <p className="text-sm text-muted-foreground">{uploadProgress}% complete</p>
                 </div>
               )}
+              {error && (
+                <p className="text-sm text-red-600 font-medium">{error}</p>
+              )}
             </CardContent>
           </Card>
 
