@@ -1,4 +1,4 @@
-// /app/api/admin/users/[id]/route.ts
+// /app/api/users/[id]/route.ts
 import { connectDB } from '@/lib/db';
 import { User } from '@/models/User';
 import { NextResponse } from 'next/server';
@@ -6,7 +6,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Types } from 'mongoose';
 import { NextRequest } from 'next/server';
-
 
 type AlbumLean = {
   _id: Types.ObjectId;
@@ -17,22 +16,11 @@ type AlbumLean = {
   eventDate: Date;
 };
 
-
-
-
-type ParamsContext = {
-  params: {
-    id: string;
-  };
-};
-
-
 export async function GET(
   request: NextRequest,
-  contextPromise: Promise<ParamsContext>
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { params } = await contextPromise;
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const session = await getServerSession(authOptions);
@@ -40,15 +28,11 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-
-
     if (!id) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     await connectDB();
-
-
 
     const user = await User.findById(id)
       .populate({
