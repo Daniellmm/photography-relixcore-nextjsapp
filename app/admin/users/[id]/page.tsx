@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import Image from 'next/image';
 
 interface Album {
     id: number;
@@ -277,7 +278,9 @@ export default function UserDetailPage() {
                             >
                                 <CardHeader className="pb-3">
                                     <div className="relative">
-                                        <img
+                                        <Image
+                                            height={400}
+                                            width={400}
                                             src={album.thumbnail}
                                             alt={album.title}
                                             className="w-full h-32 object-cover rounded-md bg-muted"
