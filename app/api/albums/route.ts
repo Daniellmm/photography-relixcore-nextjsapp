@@ -67,7 +67,7 @@ export async function GET() {
     await connectDB();
 
     const { Album } = await import('@/models/Album');
-    const { Image: _Image } = await import('@/models/Image');
+    await import('@/models/Image');
 
 
     const session = await getServerSession(authOptions);
