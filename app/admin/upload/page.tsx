@@ -16,17 +16,6 @@ import { cn } from '@/lib/utils';
 import { PaymentSwitch } from '@/components/ui/payment-switch';
 
 
-const mockUsers = [
-  { id: '1', name: 'John Smith', email: 'john@example.com' },
-  { id: '2', name: 'Sarah Johnson', email: 'sarah@example.com' },
-  { id: '3', name: 'Mike Davis', email: 'mike@example.com' },
-  { id: '4', name: 'Emily Brown', email: 'emily@example.com' },
-  { id: '5', name: 'Emily Brown', email: 'emily@example.com' },
-  { id: '6', name: 'Emily Brown', email: 'emily@example.com' },
-  { id: '7', name: 'Emily Brown', email: 'emily@example.com' },
-  { id: '8', name: 'Emily Brown', email: 'emily@example.com' },
-];
-
 const eventTypes = [
   'Wedding',
   'Birthday',

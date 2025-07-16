@@ -31,14 +31,14 @@ export default function Lightbox({
             <DialogContent className="max-w-screen-xl max-h-screen p-0 bg-lightbox-overlay/95 border-none">
                 <div className="relative w-full h-full flex items-center justify-center">
                     {/* Close button */}
-                    <Button
+                    {/* <Button
                         variant="ghost"
                         size="icon"
                         onClick={onClose}
                         className="absolute top-4 right-4 z-50 text-white hover:bg-white/20 hover:text-white"
                     >
                         <X className="h-6 w-6" />
-                    </Button>
+                    </Button> */}
 
                     {/* Navigation buttons */}
                     {images.length > 1 && (
@@ -69,7 +69,7 @@ export default function Lightbox({
                             alt={currentImage.title}
                             height={600}
                             width={600}
-                            className="object-contain"
+                            className="object-cover"
                             sizes="100vw"
                         />
 

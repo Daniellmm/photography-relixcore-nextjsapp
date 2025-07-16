@@ -27,9 +27,10 @@ export default async function AdminLayout({
         <div className="p-4 text-lg text-black font-semibold">Admin Panel</div>
         <ul className="space-y-2 p-4">
           <li><Link href="/admin" className="text-gray-700 hover:text-black">Dashboard</Link></li>
-          <li><Link href="/admin/upload" className="text-gray-700 hover:text-black">Albums</Link></li>
-          <li><Link href="/admin/images" className="text-gray-700 hover:text-black">Images</Link></li>
           <li><Link href="/admin/users" className="text-gray-700 hover:text-black">Users</Link></li>
+          <li><Link href="/admin/upload" className="text-gray-700 hover:text-black">Upload Album</Link></li>
+          <li><Link href="/admin/images" className="text-gray-700 hover:text-black">Upload Images</Link></li>
+          <li><Link href="/admin/payments" className="text-gray-700 hover:text-black">Payments</Link></li>
         </ul>
         <div className="w-full px-4">
           <LogoutButton />

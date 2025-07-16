@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 export default function Signup() {
   const router = useRouter()
@@ -30,10 +31,12 @@ export default function Signup() {
       const data = await res.json()
 
       if (!res.ok) {
+        toast("Error", { description: "Something went wrong" })
         throw new Error(data.message || 'Something went wrong')
       }
 
       router.push('/auth/signin?success=Account created')
+      toast("Success", { description: "Account created successfully" })
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message)

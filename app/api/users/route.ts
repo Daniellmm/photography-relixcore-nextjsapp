@@ -13,6 +13,6 @@ export async function GET() {
 
   await connectDB();
 
-  const users = await User.find({}, '_id name email').lean(); 
+  const users = await User.find({}, '_id name email role createdAt').lean(); 
   return NextResponse.json({ users });
 }
