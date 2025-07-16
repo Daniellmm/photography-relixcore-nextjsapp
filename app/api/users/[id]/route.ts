@@ -16,6 +16,15 @@ type AlbumLean = {
   eventDate: Date;
 };
 
+type UserLean = {
+  _id: Types.ObjectId;
+  name?: string;
+  email: string;
+  role: string;
+  createdAt: Date;
+  albums: AlbumLean[];
+};
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -40,7 +49,7 @@ export async function GET(
         select: 'title thumbnail isVisible isPaid eventDate createdAt',
         options: { sort: { createdAt: -1 } }
       })
-      .lean();
+      .lean() as UserLean | null;
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
