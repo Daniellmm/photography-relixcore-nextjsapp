@@ -1,18 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/db";
-import { Album } from "@/models/Album";
+import { NextRequest, NextResponse } from 'next/server';
+import { connectDB } from '@/lib/db';
+import { Album } from '@/models/Album';
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+    req: NextRequest,
+    context: { params: { id: string } }
 ) {
-  await connectDB();
+    await connectDB();
 
-  const album = await Album.findById(params.id).populate("images");
+    const { id } = context.params;
 
-  if (!album) {
-    return NextResponse.json({ error: "Album not found" }, { status: 404 });
-  }
+    const album = await Album.findById(id).populate("images");
 
-  return NextResponse.json({ images: album.images });
+    if (!album) {
+        return NextResponse.json({ error: "Album not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ images: album.images });
 }
