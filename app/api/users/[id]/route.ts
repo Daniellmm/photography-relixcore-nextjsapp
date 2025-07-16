@@ -4,31 +4,32 @@ import { User } from '@/models/User';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { Types } from 'mongoose';
+import { NextRequest } from 'next/server';
 
 
-
-interface PopulatedAlbum {
-  _id: any;
+type AlbumLean = {
+  _id: Types.ObjectId;
   title: string;
-  thumbnail: string;
+  thumbnail?: string;
   isVisible: boolean;
   isPaid: boolean;
   eventDate: Date;
-}
+};
 
-interface PopulatedUser {
-  _id: any;
-  name: string;
-  email: string;
-  role: string;
-  createdAt: Date;
-  albums: PopulatedAlbum[];
-}
+
+
+
+type ParamsContext = {
+  params: {
+    id: string;
+  };
+};
 
 
 export async function GET(
-  request: Request,
-  contextPromise: Promise<{ params: { id: string } }>
+  request: NextRequest,
+  contextPromise: Promise<ParamsContext>
 ) {
   const { params } = await contextPromise;
   const { id } = params;
@@ -47,7 +48,7 @@ export async function GET(
 
     await connectDB();
 
-    const { Album } = await import('@/models/Album');
+
 
     const user = await User.findById(id)
       .populate({
@@ -67,13 +68,13 @@ export async function GET(
       email: user.email,
       role: user.role,
       createdDate: user.createdAt.toISOString(),
-      albums: (user.albums as any[] || []).map((album) => ({
+      albums: (user.albums as AlbumLean[]).map((album) => ({
         id: album._id.toString(),
         title: album.title,
         thumbnail: album.thumbnail || 'https://via.placeholder.com/400',
         isVisible: album.isVisible,
         isPaid: album.isPaid,
-        eventDate: new Date(album.eventDate).toISOString(),
+        eventDate: album.eventDate.toISOString(),
       })),
     };
 
