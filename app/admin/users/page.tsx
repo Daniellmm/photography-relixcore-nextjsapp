@@ -55,11 +55,11 @@ export default function UsersPage() {
             try {
                 setLoading(true);
                 const response = await fetch('/api/users');
-                
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
-                
+
                 const data = await response.json();
                 setUsers(data.users);
             } catch (err) {
@@ -82,7 +82,7 @@ export default function UsersPage() {
     };
 
     const filteredAndSortedUsers = useMemo(() => {
-        let filtered = users.filter(
+        const filtered = users.filter(
             (user) =>
                 user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,8 +90,8 @@ export default function UsersPage() {
         );
 
         filtered.sort((a, b) => {
-            let aValue: any = a[sortField];
-            let bValue: any = b[sortField];
+            let aValue = String(a[sortField] ?? '');
+            let bValue = String(b[sortField] ?? '');
 
             if (typeof aValue === 'string') {
                 aValue = aValue.toLowerCase();
@@ -137,7 +137,7 @@ export default function UsersPage() {
                     <Skeleton className="h-8 w-32" />
                     <Skeleton className="h-10 w-32" />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     {[...Array(4)].map((_, i) => (
                         <Card key={i}>
@@ -196,7 +196,7 @@ export default function UsersPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl text-background font-bold">Users Management</h1>
-                <Button 
+                <Button
                     onClick={() => router.push('/admin/users/new')}
                     className="bg-black hover:bg-black/80"
                 >

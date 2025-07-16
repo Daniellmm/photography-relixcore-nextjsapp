@@ -14,6 +14,7 @@ import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { PaymentSwitch } from '@/components/ui/payment-switch';
+import Image from 'next/image';
 
 
 const eventTypes = [
@@ -29,7 +30,6 @@ const eventTypes = [
 
 
 export default function UploadPage() {
-  const [files, setFiles] = useState<FileList | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -107,11 +107,14 @@ export default function UploadPage() {
         handleReset();
       }, 1000);
 
-    } catch (error: any) {
-      console.error('Upload failed:', error);
-      setError(error.response?.data?.message || 'Upload failed. Please try again.');
-      setUploadProgress(0);
-    } finally {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Upload failed. Please try again.');
+      } else {
+        setError('Upload failed. Please try again.');
+      }
+    }
+    finally {
       setIsUploading(false);
     }
   };
@@ -342,7 +345,9 @@ export default function UploadPage() {
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 max-h-64 overflow-y-auto">
                     {previews.map((preview, index) => (
                       <div key={index} className="relative group">
-                        <img
+                        <Image
+                          height={200}
+                          width={200}
                           src={preview}
                           alt={`Preview ${index + 1}`}
                           className="w-full h-20 object-cover rounded-md border"
