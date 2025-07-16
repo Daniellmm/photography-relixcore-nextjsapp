@@ -19,6 +19,16 @@ interface Album {
   eventType: string;
 }
 
+interface AlbumFromAPI {
+  _id: string;
+  title: string;
+  eventDate: string;
+  eventType: string;
+  paid: boolean;
+  images?: { url: string }[];
+}
+
+
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -33,24 +43,25 @@ export default function Dashboard() {
   useEffect(() => {
     fetch('/api/albums')
       .then((res) => res.json())
-      .then((data) => {
-        const formatted = data.map((album: any) => ({
+      .then((data: AlbumFromAPI[]) => {
+        const formatted = data.map((album) => ({
           _id: album._id,
           name: album.title,
           eventDate: album.eventDate,
           eventType: album.eventType,
           isPaid: album.paid,
           photoCount: album.images?.length || 0,
-          thumbnailUrl: album.images?.[0]?.url,
+          thumbnailUrl: album.images?.[0]?.url ?? '/placeholder.jpg',
+
         }));
 
         setAlbums(formatted);
       })
-      .catch((err) =>
-        // console.error('Failed to fetch albums:', err),
+      .catch(() =>
         toast("Error", { description: "Failed to fetch albums" })
       );
   }, []);
+
 
   const handlePayment = (albumId: string) => {
     console.log(`Initiating payment for album ${albumId}`);

@@ -18,6 +18,13 @@ interface Image {
     alt: string;
 }
 
+interface FetchedImage {
+    _id: string;
+    url: string;
+    alt?: string;
+}
+
+
 export default function AlbumViewer() {
     const params = useParams();
     const albumId = params.id as string;
@@ -34,13 +41,13 @@ export default function AlbumViewer() {
             try {
                 const res = await fetch(`/api/albums/${albumId}`);
                 const data = await res.json();
-                const formatted = data.images.map((img: any, i: number) => ({
+                const formatted = data.images.map((img: FetchedImage, i: number) => ({
                     id: img._id || String(i),
                     url: img.url,
                     alt: img.alt || `Image ${i + 1}`,
                 }));
                 setImages(formatted);
-            } catch (err) {
+            } catch {
                 toast("Failed to load album", { description: "Please try again later." });
             }
         };
@@ -78,7 +85,7 @@ export default function AlbumViewer() {
             } else {
                 throw new Error("Failed to save");
             }
-        } catch (err) {
+        } catch {
             toast("Error", { description: "Something went wrong saving your selections." });
         }
     };
