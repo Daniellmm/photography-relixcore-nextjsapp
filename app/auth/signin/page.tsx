@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
+import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -16,25 +16,35 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const res = await signIn('credentials', {
-      ...form,
-      redirect: false,
-    })
+    try {
+      const res = await signIn('credentials', {
+        ...form,
+        redirect: false,
+      })
 
-    if (res?.error) {
-      setError('Invalid email or password')
-      setLoading(false)
-    } else {
-      const sessionRes = await fetch('/api/auth/session')
-      const session = await sessionRes.json()
-
-      const userRole = session?.user?.role
-
-      if (userRole === 'admin') {
-        router.push('/admin')
-      } else {
-        router.push('/dashboard')
+      if (res?.error) {
+        setError('Invalid email or password')
+        setLoading(false)
+        return
       }
+
+      if (res?.ok) {
+        // Use getSession instead of manual fetch
+        const session = await getSession()
+        
+        if (session?.user?.role === 'admin') {
+          router.push('/admin')
+        } else {
+          router.push('/dashboard')
+        }
+      } else {
+        setError('Login failed. Please try again.')
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('An error occurred during login. Please try again.')
+      setLoading(false)
     }
   }
 
