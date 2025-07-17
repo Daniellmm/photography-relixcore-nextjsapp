@@ -5,7 +5,11 @@ const UserSchema = new Schema({
   email: { type: String, unique: true },
   password: String,
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  albums: [{ type: Schema.Types.ObjectId, ref: 'Album' }],
+  albums: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Album',
+    default: []
+  }],
 }, { timestamps: true });
 
 export const User = models.User || mongoose.model('User', UserSchema);

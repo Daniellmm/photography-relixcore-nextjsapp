@@ -1,7 +1,10 @@
-import type { Metadata } from "next";
+'use client'
+
+// import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster as Sonner } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 
 const poppins = Poppins({
@@ -10,10 +13,10 @@ const poppins = Poppins({
   weight: '100'
 });
 
-export const metadata: Metadata = {
-  title: "RelixCore Photography Portfolio",
-  description: "Professional photography page",
-};
+// export const metadata: Metadata = {
+//   title: "RelixCore Photography Portfolio",
+//   description: "Professional photography page",
+// };
 
 export default function RootLayout({
   children,
@@ -25,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} antialiased`}>
         <Sonner />
-        <main>{children}</main>
+        <main><SessionProvider>{children}</SessionProvider></main>
       </body>
     </html>
   );

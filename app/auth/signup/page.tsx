@@ -96,12 +96,20 @@ export default function Signup() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link href="/auth/signin" className="text-black font-medium hover:underline">
-            Sign in
-          </Link>
-        </p>
+        <div className='flex justify-between items-center'>
+          <p className="text-sm text-gray-600">
+            Go back to {' '}
+            <Link href="/" className="font-medium text-black hover:text-gray-800">
+              Home
+            </Link>
+          </p>
+          <p className="text-center text-sm text-gray-600">
+            Already have an account?{' '}
+            <Link href="/auth/signin" className="text-black font-medium hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

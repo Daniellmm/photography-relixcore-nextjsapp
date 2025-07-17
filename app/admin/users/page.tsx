@@ -192,7 +192,7 @@ export default function UsersPage() {
     };
 
     return (
-        <div className="container mx-auto p-6 space-y-6">
+        <div className=" mx-auto p-6 space-y-6 ">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl text-background font-bold">Users Management</h1>
@@ -206,7 +206,7 @@ export default function UsersPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Card>
                     <CardHeader className="pb-3">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
@@ -243,7 +243,7 @@ export default function UsersPage() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                {/* <Card>
                     <CardHeader className="pb-3">
                         <CardTitle className="text-sm font-medium text-muted-foreground">New This Week</CardTitle>
                     </CardHeader>
@@ -253,7 +253,7 @@ export default function UsersPage() {
                             <span className="text-2xl font-bold text-background">{stats.recentUsers}</span>
                         </div>
                     </CardContent>
-                </Card>
+                </Card> */}
             </div>
 
             {/* Search */}

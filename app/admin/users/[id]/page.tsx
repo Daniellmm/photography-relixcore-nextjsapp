@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import Image from 'next/image';
 
 interface Album {
-    id: number;
+    id: string;
     title: string;
     thumbnail: string;
     isVisible: boolean;
@@ -21,48 +21,13 @@ interface Album {
 }
 
 interface UserDetail {
-    id: number;
+    id: string;
     name: string;
     email: string;
     role: string;
     createdDate: string;
     albums: Album[];
 }
-
-// Mock data - replace with actual API call
-// const mockUserDetail: UserDetail = {
-//     id: 1,
-//     name: 'John Smith',
-//     email: 'john.smith@email.com',
-//     role: 'Client',
-//     createdDate: '2024-01-15',
-//     albums: [
-//         {
-//             id: 1,
-//             title: 'Wedding Ceremony',
-//             thumbnail: '/placeholder.svg',
-//             isVisible: true,
-//             isPaid: true,
-//             eventDate: '2024-02-14'
-//         },
-//         {
-//             id: 2,
-//             title: 'Reception Photos',
-//             thumbnail: '/placeholder.svg',
-//             isVisible: true,
-//             isPaid: false,
-//             eventDate: '2024-02-14'
-//         },
-//         {
-//             id: 3,
-//             title: 'Engagement Session',
-//             thumbnail: '/placeholder.svg',
-//             isVisible: false,
-//             isPaid: true,
-//             eventDate: '2024-01-20'
-//         }
-//     ]
-// };
 
 export default function UserDetailPage() {
     const params = useParams();
@@ -77,16 +42,22 @@ export default function UserDetailPage() {
         const fetchUser = async () => {
             try {
                 setLoading(true);
-                // Replace with actual API call
-                const response = await fetch(`/api/users/${userId}`);
-                if (!response.ok) throw new Error('Failed to fetch user');
+                setError(null);
+
+                const response = await fetch(`/api/users/${userId}`, {
+                    cache: 'no-store' // Ensure fresh data
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch user');
+                }
+
                 const data = await response.json();
                 setUser(data.user);
 
-                // Simulate API delay
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                setUser(data.user);
             } catch (err) {
+                console.error('Fetch error:', err);
                 setError(err instanceof Error ? err.message : 'An error occurred');
             } finally {
                 setLoading(false);
@@ -96,7 +67,7 @@ export default function UserDetailPage() {
         fetchUser();
     }, [userId]);
 
-    const handleAlbumClick = (albumId: number) => {
+    const handleAlbumClick = (albumId: string) => {
         // Navigate to album detail page
         router.push(`/admin/albums/${albumId}`);
     };

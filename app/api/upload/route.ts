@@ -6,19 +6,12 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Readable } from 'stream';
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
-
 type CloudinaryUploadResult = {
   public_id: string;
   secure_url: string;
   url?: string;
   format?: string;
   created_at?: string;
-  // add any other fields you care about
 };
 
 

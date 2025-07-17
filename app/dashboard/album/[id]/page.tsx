@@ -40,15 +40,27 @@ export default function AlbumViewer() {
         const fetchAlbumImages = async () => {
             try {
                 const res = await fetch(`/api/albums/${albumId}`);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch album');
+                }
+
                 const data = await res.json();
-                const formatted = data.images.map((img: FetchedImage, i: number) => ({
-                    id: img._id || String(i),
+
+                // Make sure we're accessing the correct property from the response
+                const albumImages = data.album?.images || data.images || [];
+
+                const formatted = albumImages.map((img: any, i: number) => ({
+                    id: img._id?.toString() || String(i),
                     url: img.url,
                     alt: img.alt || `Image ${i + 1}`,
                 }));
+
                 setImages(formatted);
-            } catch {
-                toast("Failed to load album", { description: "Please try again later." });
+            } catch (error) {
+                console.error('Error fetching album:', error);
+                toast.error("Failed to load album", {
+                    description: error instanceof Error ? error.message : "Please try again later."
+                });
             }
         };
 

@@ -1,30 +1,25 @@
 'use client';
 
+import LogoutButton from '@/app/dashboard/LogoutButton';;
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
-import LogoutButton from "../dashboard/LogoutButton";
-import Link from "next/link";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  session: any;
+}
+
+export default function DashboardLayout({ children, session }: DashboardLayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
   const pathname = usePathname();
-  const router = useRouter();
-  
 
-  // ✅ Redirect non-admin users
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role !== 'admin') {
-      router.replace('/'); // redirect to home or unauthorized page
-    }
-  }, [status, session, router]);
-
-  // Close mobile menu on outside click
+  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const sidebar = document.getElementById('mobile-sidebar');
       const menuButton = document.getElementById('mobile-menu-button');
+
       if (sidebar && menuButton &&
         !sidebar.contains(event.target as Node) &&
         !menuButton.contains(event.target as Node)) {
@@ -41,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on window resize
+  // Close mobile menu on window resize to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -54,14 +49,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, []);
 
   const navItems = [
-    { href: "/admin", label: "Dashboard" },
-    { href: "/admin/users", label: "Users" },
-    { href: "/admin/upload", label: "Upload Album" },
-    { href: "/admin/images", label: "Upload Images" },
-    { href: "/admin/payments", label: "Payments" },
+    { href: "/dashboard", label: "My Gallery" },
+    { href: "/dashboard/profile", label: "Profile" },
+    { href: "/dashboard/orders", label: "Orders" },
   ];
 
-   const activeItem = navItems.reduce((bestMatch, item) => {
+  const activeItem = navItems.reduce((bestMatch, item) => {
     if (
       pathname === item.href ||
       pathname.startsWith(item.href + "/")
@@ -74,18 +67,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const NavContent = () => (
     <>
       <div className="p-4 text-lg text-black font-semibold border-b border-gray-200">
-        Admin Panel
+        Client Dashboard
       </div>
       <ul className="space-y-2 p-4 flex-1">
         {navItems.map((item) => {
-         const isActive = activeItem === item.href
+          const isActive = activeItem === item.href 
           return (
             <li key={item.href}>
               <Link
                 href={item.href}
                 className={`block px-3 py-2 rounded-md transition-colors ${isActive
-                    ? 'bg-black text-white'
-                    : 'text-gray-700 hover:bg-black hover:text-white'
+                  ? 'bg-black text-white'
+                  : 'text-gray-700 hover:bg-black hover:text-white'
                   }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -100,20 +93,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
     </>
   );
-
-  // ✅ Show loader while checking session
-  if (status === 'loading') {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <span className="text-gray-600">Loading...</span>
-      </div>
-    );
-  }
-
-  // ✅ Don't render layout if not admin (redirect happens in useEffect)
-  if (status === 'authenticated' && session?.user?.role !== 'admin') {
-    return null;
-  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
@@ -136,28 +115,54 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Main Area */}
-      <div className="flex-1 flex flex-col h-full min-w-0">
-        <header className="bg-white text-black shadow p-4 flex justify-between items-center flex-shrink-0">
+      <div className="flex-1 flex flex-col h-full">
+        {/* Header */}
+        <header className="bg-white text-black shadow p-4 flex justify-between items-center">
           <div className="flex items-center space-x-3">
+            {/* Mobile Menu Button */}
             <button
               id="mobile-menu-button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 rounded-md text-gray-600 hover:text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
               aria-label="Toggle mobile menu"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
-            <h1 className="text-lg font-medium">Welcome back, Admin!</h1>
+
+            <h1 className="text-lg font-medium">Welcome, {session.user.name}!</h1>
+          </div>
+
+          <div className="text-right text-sm hidden sm:block">
+            <div className="font-medium">{session.user.name}</div>
+            <div className="text-gray-500">{session.user.email}</div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-x-auto overflow-y-auto min-w-0">{children}</main>
+        {/* Scrollable Content */}
+        <main className="flex-1 overflow-y-auto overflow-x-auto p-2 md:p-6 min-w-0">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -10,3 +10,4 @@ const ImageSchema = new Schema({
 }, { timestamps: true });
 
 export const Image = models.Image || mongoose.model('Image', ImageSchema);
+

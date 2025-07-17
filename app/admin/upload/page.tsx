@@ -284,17 +284,19 @@ export default function UploadPage() {
                     <Label htmlFor="paid">Payment Status</Label>
                   </div>
 
-                  <PaymentSwitch
-                    id="paid"
-                    checked={formData.isPaid}
-                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isPaid: checked }))}
-                    thumbColor="white"
-                  />
+                  <div className='flex flex-col'>
+                    <PaymentSwitch
+                      id="paid"
+                      checked={formData.isPaid}
+                      onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isPaid: checked }))}
+                      thumbColor="white"
+                    />
 
-                  <span className={`text-sm font-semibold ${formData.isPaid ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                    {formData.isPaid ? 'Paid' : 'Unpaid'}
-                  </span>
+                    <span className={`text-sm font-semibold ${formData.isPaid ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                      {formData.isPaid ? 'Paid' : 'Unpaid'}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
