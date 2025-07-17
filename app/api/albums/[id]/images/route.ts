@@ -11,6 +11,7 @@ export async function DELETE(
   try {
     await connectDB(); 
 
+     
     const { id } = await params;
     const { imageIds } = await req.json();
 
