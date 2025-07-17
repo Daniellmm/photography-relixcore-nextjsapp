@@ -6,6 +6,8 @@ import { Selection } from "@/models/Selection";
 import { connectDB } from "@/lib/db";
 import { User } from '@/models/User';
 import mongoose from 'mongoose';
+import { Types } from 'mongoose';
+
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
@@ -42,9 +44,9 @@ interface UserRef {
 }
 
 interface SelectionDocument {
-  _id: any;
-  userId: UserRef | mongoose.Types.ObjectId;
-  albumId: string | mongoose.Types.ObjectId;
+  _id: Types.ObjectId;
+  userId: UserRef | Types.ObjectId;
+  albumId: string | Types.ObjectId;
   selectedImageIds: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -58,7 +60,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   await connectDB();
-  
+
   // Verify admin role
   const user = await User.findById(session.user._id);
   if (!user || user.role !== 'admin') {
@@ -66,7 +68,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   const albumId = params.id;
- const selections = await Selection.find({ albumId: params.id })
+  const selections = await Selection.find({ albumId })
     .populate('userId', 'name email')
     .lean<SelectionDocument[]>();
 

@@ -61,7 +61,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Album } from '@/models/Album';
 import mongoose from 'mongoose';
-import '@/models/Image';
+// import '@/models/Image';
+import { IImage } from '@/models/Image';
+
+
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
@@ -89,7 +92,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             isVisible: album.isVisible,
             paid: album.paid,
             totalImages: album.images?.length || 0,
-            images: (album.images || []).map((img: any) => ({
+            images: (album.images || []).map((img: IImage) => ({
                 _id: img._id.toString(),
                 url: img.url,
                 public_id: img.public_id,
