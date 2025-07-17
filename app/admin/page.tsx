@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Download, CreditCard, Image as ImageIcon, Trash } from 'lucide-react';
+import { Calendar, Image as ImageIcon, Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';

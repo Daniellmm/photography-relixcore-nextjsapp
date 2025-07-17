@@ -99,7 +99,7 @@ export default function AdminAlbumViewer() {
             } else {
                 throw new Error("Failed to delete");
             }
-        } catch (error) {
+        } catch {
             toast("Error", {
                 description: "Something went wrong deleting images.",
             });

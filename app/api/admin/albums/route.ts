@@ -6,7 +6,7 @@ import { authOptions } from '@/lib/auth';
 import { Album } from '@/models/Album';
 import { isValidObjectId } from 'mongoose';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
