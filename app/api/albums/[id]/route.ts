@@ -63,20 +63,21 @@ import { Album } from '@/models/Album';
 import mongoose from 'mongoose';
 import { IImage } from '@/models/Image';
 
-
-
 export async function GET(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
         await connectDB();
 
-        if (!mongoose.Types.ObjectId.isValid(params.id)) {
+        // Await the params promise
+        const { id } = await params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ error: "Invalid album ID" }, { status: 400 });
         }
 
-        const album = await Album.findById(params.id).populate({
+        const album = await Album.findById(id).populate({
             path: 'images',
             model: 'Image',
         });
