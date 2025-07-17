@@ -62,6 +62,7 @@ import { connectDB } from '@/lib/db';
 import { Album } from '@/models/Album';
 import mongoose from 'mongoose';
 import { IImage } from '@/models/Image';
+import  '@/models/Image';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
     try {
