@@ -5,7 +5,6 @@ import { getServerSession } from "next-auth";
 import { Selection } from "@/models/Selection";
 import { connectDB } from "@/lib/db";
 import { User } from '@/models/User';
-import mongoose from 'mongoose';
 import { Types } from 'mongoose';
 
 

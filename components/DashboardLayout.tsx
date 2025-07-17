@@ -5,9 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+interface UserSession {
+  user: {
+    name: string;
+    email: string;
+  };
+}
+
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  session: any;
+  session: UserSession;
 }
 
 export default function DashboardLayout({ children, session }: DashboardLayoutProps) {

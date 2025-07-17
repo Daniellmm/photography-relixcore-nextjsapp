@@ -18,11 +18,11 @@ interface Image {
     alt: string;
 }
 
-interface FetchedImage {
-    _id: string;
-    url: string;
-    alt?: string;
-}
+// interface FetchedImage {
+//     _id: string;
+//     url: string;
+//     alt?: string;
+// }
 
 
 export default function AlbumViewer() {
@@ -49,7 +49,7 @@ export default function AlbumViewer() {
                 // Make sure we're accessing the correct property from the response
                 const albumImages = data.album?.images || data.images || [];
 
-                const formatted = albumImages.map((img: any, i: number) => ({
+                const formatted = albumImages.map((img: { _id: string; url: string; alt?: string }, i: number) => ({
                     id: img._id?.toString() || String(i),
                     url: img.url,
                     alt: img.alt || `Image ${i + 1}`,
