@@ -27,7 +27,7 @@ type UserLean = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -35,14 +35,17 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    if (!params.id) {
+    // Await the params promise
+    const { id } = await params;
+
+    if (!id) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     await connectDB();
     await import('@/models/Album');
 
-    const user = await User.findById(params.id)
+    const user = await User.findById(id)
       .populate({
         path: 'albums',
         select: 'title thumbnail isVisible paid eventDate createdAt',
