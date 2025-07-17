@@ -4,14 +4,21 @@ import { Image } from "@/models/Image";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
+interface DeleteContext {
+  params: {
+    id: string;
+  };
+}
+
+
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: DeleteContext
 ) {
   try {
     await connectDB();
 
-    const { id } = context.params;
+    const { id } = params;
     const { imageIds } = await req.json();
 
     if (!id || !Array.isArray(imageIds)) {
