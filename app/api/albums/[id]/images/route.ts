@@ -9,7 +9,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await connectDB();
+    await connectDB(); 
 
     const { id } = await params;
     const { imageIds } = await req.json();
