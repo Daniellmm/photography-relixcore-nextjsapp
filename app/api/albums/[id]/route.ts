@@ -61,12 +61,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Album } from '@/models/Album';
 import mongoose from 'mongoose';
-// import '@/models/Image';
 import { IImage } from '@/models/Image';
 
 
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+    req: NextRequest,
+    { params }: { params: { id: string } }
+): Promise<NextResponse> {
     try {
         await connectDB();
 
@@ -76,7 +78,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
         const album = await Album.findById(params.id).populate({
             path: 'images',
-            model: 'Image'
+            model: 'Image',
         });
 
         if (!album) {
@@ -97,24 +99,20 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 url: img.url,
                 public_id: img.public_id,
                 watermarkUrl: img.watermarkUrl,
-                visible: img.visible
-            }))
+                visible: img.visible,
+            })),
         };
 
         return NextResponse.json({ album: albumData });
-    } catch (error: unknown) { // Explicitly type as unknown
-        // Type-safe error handling
+    } catch (error: unknown) {
         let errorMessage = "Internal server error";
         if (error instanceof Error) {
             errorMessage = error.message;
-        } else if (typeof error === 'string') {
+        } else if (typeof error === "string") {
             errorMessage = error;
         }
 
-        console.error('Error fetching album:', error);
-        return NextResponse.json(
-            { error: errorMessage },
-            { status: 500 }
-        );
+        console.error("Error fetching album:", error);
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
