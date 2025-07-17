@@ -52,7 +52,7 @@ interface SelectionDocument {
   __v: number;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse>  {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -60,13 +60,15 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   await connectDB();
 
+  const { id } = await params;
+
   // Verify admin role
   const user = await User.findById(session.user._id);
   if (!user || user.role !== 'admin') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const albumId = params.id;
+  const albumId = id;
   const selections = await Selection.find({ albumId })
     .populate('userId', 'name email')
     .lean<SelectionDocument[]>();
