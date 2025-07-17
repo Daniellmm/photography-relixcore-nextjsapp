@@ -6,12 +6,12 @@ import mongoose from "mongoose";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const { id } = context.params;
+    const { id } = await params;
     const { imageIds } = await req.json();
 
     if (!id || !Array.isArray(imageIds)) {
