@@ -75,7 +75,7 @@ export default function AdminAlbumDetailPage() {
                     const errorData = await albumRes.json();
                     throw new Error(errorData.error || 'Failed to fetch album');
                 }
- 
+  
                 if (!selectionsRes.ok) {
                     const errorData = await selectionsRes.json();
                     throw new Error(errorData.error || 'Failed to fetch selections');

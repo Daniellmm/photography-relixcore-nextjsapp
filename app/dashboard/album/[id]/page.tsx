@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Check, Download, ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 
@@ -32,7 +34,7 @@ export default function AlbumViewer() {
 
     const [images, setImages] = useState<Image[]>([]);
     const [loading, setLoading] = useState(true);
-     const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
     const [viewingImageIndex, setViewingImageIndex] = useState<number | null>(null);
 
@@ -41,6 +43,7 @@ export default function AlbumViewer() {
 
         const fetchAlbumImages = async () => {
             try {
+
                 const res = await fetch(`/api/albums/${albumId}`);
                 if (!res.ok) {
                     throw new Error('Failed to fetch album');
@@ -105,31 +108,64 @@ export default function AlbumViewer() {
     };
 
 
-   useEffect(() => {
-    const fetchAlbumDetails = async () => {
-        try {
-            setLoading(true);
+    useEffect(() => {
+        const fetchAlbumDetails = async () => {
+            try {
+                setLoading(true);
 
-            const albumRes = await fetch(`/api/albums/${albumId}/select`);
-            if (!albumRes.ok) {
-                const errorData = await albumRes.json();
-                throw new Error(errorData.error || 'Failed to fetch album');
+                const albumRes = await fetch(`/api/albums/${albumId}/select`);
+                if (!albumRes.ok) {
+                    const errorData = await albumRes.json();
+                    throw new Error(errorData.error || 'Failed to fetch album');
+                }
+
+                const selectionData = await albumRes.json();
+                const selected = selectionData.selectedImageIds || [];
+                setSelectedImages(new Set(selected));
+
+            } catch (err) {
+                console.error('Fetch error:', err);
+                setError(err instanceof Error ? err.message : 'An error occurred');
+            } finally {
+                setLoading(false);
             }
+        };
 
-            const selectionData = await albumRes.json();
-            const selected = selectionData.selectedImageIds || [];
-            setSelectedImages(new Set(selected)); 
+        fetchAlbumDetails();
+    }, [albumId]);
 
-        } catch (err) {
-            console.error('Fetch error:', err);
-            setError(err instanceof Error ? err.message : 'An error occurred');
-        } finally {
-            setLoading(false);
+
+    if (loading) {
+            return (
+                <div className="container mx-auto p-6 space-y-6">
+                    <div className="flex items-center space-x-4">
+                        <Skeleton className="h-10 w-10 rounded-md" />
+                        <Skeleton className="h-8 w-48" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        {[...Array(4)].map((_, i) => (
+                            <Card key={i} className="h-72 w-60">
+                                <CardHeader>
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-6 w-32" />
+                                </CardHeader>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+            );
         }
-    };
 
-    fetchAlbumDetails();
-}, [albumId]);
+
+    if (error) {
+        return (
+            <div className="container mx-auto p-6">
+                <Alert className="max-w-md mx-auto">
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            </div>
+        );
+    }
 
 
     return (

@@ -16,7 +16,7 @@ export const Paystack = {
   }: {
     email: string;
     amount: number; // in kobo
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
     callback_url?: string;
   }) {
     const res = await fetch(`${BASE_URL}/transaction/initialize`, {

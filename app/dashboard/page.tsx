@@ -82,9 +82,9 @@ export default function Dashboard() {
 
       // Redirect to Paystack checkout URL
       window.location.href = data.authorization_url;
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      toast('Payment failed', { description: err.message });
+      toast('Payment failed');
     }
   };
 

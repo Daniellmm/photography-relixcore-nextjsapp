@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { Selection } from "@/models/Selection";
 import { connectDB } from "@/lib/db";
-import { Types } from 'mongoose';
+// import { Types } from 'mongoose';
 
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -35,11 +35,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
 
 // Add to your types file or at the top of the route file
-interface UserRef {
-  _id: string;
-  name: string;
-  email: string;
-}
+// interface UserRef {
+//   _id: string;
+//   name: string;
+//   email: string;
+// }
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);

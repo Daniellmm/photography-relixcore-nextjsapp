@@ -23,7 +23,7 @@ export default function PaymentSuccessPage() {
           headers: { 'Content-Type': 'application/json' },
         });
 
-        const data = await res.json();
+        await res.json();
 
         if (!res.ok) {
           toast.error('Payment verification failed');
@@ -35,6 +35,7 @@ export default function PaymentSuccessPage() {
         // Optionally redirect to album page
         router.push(`/dashboard`);
       } catch (err) {
+        console.error(err);
         toast.error('Error verifying payment');
         router.push('/dashboard');
       } finally {
@@ -49,7 +50,9 @@ export default function PaymentSuccessPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <Loader2 className="animate-spin h-8 w-8 mx-auto text-muted-foreground" />
-        <p className="mt-4 text-muted-foreground">Verifying your payment...</p>
+        {verifying && (
+          <p className="mt-4 text-muted-foreground">Verifying your payment...</p>
+        )}
       </div>
     </div>
   );
