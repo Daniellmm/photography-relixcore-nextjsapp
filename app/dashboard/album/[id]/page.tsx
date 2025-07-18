@@ -144,7 +144,7 @@ export default function AlbumViewer() {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[...Array(4)].map((_, i) => (
-                            <Card key={i} className="h-72 w-60">
+                            <Card key={i} className="h-72 md:w-60">
                                 <CardHeader>
                                     <Skeleton className="h-4 w-24" />
                                     <Skeleton className="h-6 w-32" />
@@ -210,8 +210,8 @@ export default function AlbumViewer() {
             </div>
 
             {selectedImages.size > 0 && (
-                <div className="fixed bottom-5 right-20  w-[70%] rounded-md bg-background/90 backdrop-blur-md border-t px-4 py-4">
-                    <div className="max-w-7xl mx-auto flex justify-between items-center">
+                <div className="fixed bottom-5 md:right-20 right-5 w-[90%]  md:w-[70%] rounded-md bg-background/90 backdrop-blur-md border-t px-4 py-4">
+                    <div className="max-w-7xl mx-auto flex  justify-between items-center">
                         <Badge variant="secondary">{selectedImages.size} selected</Badge>
                         <Button onClick={handleSave}>
                             <Download className="mr-2 h-4 w-4" />
