@@ -14,6 +14,7 @@ import Image from 'next/image';
 interface Album {
     id: string;
     title: string;
+    price: number;
     thumbnail: string;
     isVisible: boolean;
     isPaid: boolean;
@@ -45,7 +46,7 @@ export default function UserDetailPage() {
                 setError(null);
 
                 const response = await fetch(`/api/users/${userId}`, {
-                    cache: 'no-store' 
+                    cache: 'no-store'
                 });
 
                 if (!response.ok) {
@@ -139,6 +140,7 @@ export default function UserDetailPage() {
 
     const stats = {
         totalAlbums: albums.length,
+       
         visibleAlbums: albums.filter(album => album.isVisible).length,
         paidAlbums: albums.filter(album => album.isPaid).length,
         unpaidAlbums: albums.filter(album => !album.isPaid).length
@@ -264,9 +266,15 @@ export default function UserDetailPage() {
                                     </div>
                                 </CardHeader>
                                 <CardContent className="space-y-3">
-                                    <CardTitle className="text-base text-background">
-                                        {album.title}
-                                    </CardTitle>
+                                    <div className='flex justify-between items-end'>
+                                        <CardTitle className="text-base text-background">
+                                            {album.title}
+                                        </CardTitle>
+
+                                        <div className='font-semibold'>
+                                            <h2>₦{album.price}</h2>
+                                        </div>
+                                    </div>
                                     <p className="text-sm text-muted-foreground">
                                         {new Date(album.eventDate).toLocaleDateString()}
                                     </p>

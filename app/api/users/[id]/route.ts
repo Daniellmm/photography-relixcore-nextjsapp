@@ -10,6 +10,7 @@ import { NextRequest } from 'next/server';
 type AlbumLean = {
   _id: Types.ObjectId;
   title: string;
+  price: number;
   thumbnail?: string;
   isVisible: boolean;
   isPaid: boolean;
@@ -69,10 +70,11 @@ export async function GET(
       albums: albums.map((album) => ({
         id: album._id.toString(),
         title: album.title,
+        price: album.price,
         thumbnail: album.thumbnail || 'https://via.placeholder.com/400',
         isVisible: album.isVisible,
-        isPaid: album.isPaid, // Note: Changed from isPaid to match your schema
-        eventDate: album.eventDate.toISOString(),
+        isPaid: album.isPaid,
+        eventDate: album.eventDate,
       })),
     };
 

@@ -26,6 +26,7 @@ interface ImageSelection {
 interface Album {
     id: string;
     title: string;
+    price: number;
     description?: string;
     eventDate: string;
     eventType: string;
@@ -176,7 +177,12 @@ export default function AdminAlbumDetailPage() {
                         )}
                     </CardHeader>
                     <CardContent>
-                        <h2 className="text-xl font-bold mb-2">{album.title}</h2>
+                        <div className=' flex justify-between items-center'>
+                            <h2 className="text-xl font-bold mb-2">{album.title}</h2>
+                            <div className='font-semibold'>
+                                <h2>₦{album.price}</h2>
+                            </div>
+                        </div>
                         {album.description && (
                             <p className="text-sm text-muted-foreground mb-2">{album.description}</p>
                         )}
