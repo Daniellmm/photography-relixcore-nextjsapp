@@ -25,6 +25,7 @@ export async function POST(req: Request) {
 
     const albumData = {
       ...body,
+      price: body.price !== undefined ? body.price : 0,
       userId: session.user._id,
       owner: session.user._id,
     };

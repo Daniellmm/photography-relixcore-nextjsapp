@@ -33,6 +33,7 @@ export default function UploadPage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    price: null as number | null,
     eventDate: undefined as Date | undefined,
     eventType: '',
     isVisible: true,
@@ -88,6 +89,7 @@ export default function UploadPage() {
       const albumPayload = {
         title: formData.title,
         description: formData.description,
+        price: formData.price ?? 0,
         eventDate: formData.eventDate,
         eventType: formData.eventType,
         isVisible: formData.isVisible,
@@ -163,6 +165,7 @@ export default function UploadPage() {
     setFormData({
       title: '',
       description: '',
+      price: null,
       eventDate: undefined,
       eventType: '',
       isVisible: true,
@@ -201,6 +204,23 @@ export default function UploadPage() {
                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="Enter album title"
                     required
+                    className='border-black/50'
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Album Price</Label>
+                  <Input
+                    id="price"
+                    value={formData.price ?? ''}
+                    type='number'
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFormData(prev => ({
+                        ...prev,
+                        price: value === '' ? null : parseFloat(value)
+                      }));
+                    }}
+                    placeholder="Enter album price"
                     className='border-black/50'
                   />
                 </div>

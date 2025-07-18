@@ -45,7 +45,7 @@ export default function UserDetailPage() {
                 setError(null);
 
                 const response = await fetch(`/api/users/${userId}`, {
-                    cache: 'no-store' // Ensure fresh data
+                    cache: 'no-store' 
                 });
 
                 if (!response.ok) {
@@ -69,7 +69,7 @@ export default function UserDetailPage() {
 
     const handleAlbumClick = (albumId: string) => {
         // Navigate to album detail page
-        router.push(`/admin/albums/${albumId}`);
+        router.push(`/admin/albums/${albumId}?user=${userId}`);
     };
 
     if (loading) {

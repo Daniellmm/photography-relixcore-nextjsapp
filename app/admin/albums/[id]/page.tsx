@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, User, Eye, EyeOff, CreditCard, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,12 +49,16 @@ interface AlbumDetailData {
 export default function AdminAlbumDetailPage() {
     const params = useParams();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const userIdFromQuery = searchParams.get('user');
     const albumId = params.id as string;
 
     const [data, setData] = useState<AlbumDetailData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedUser, setSelectedUser] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<string | null>(userIdFromQuery);
+
 
     useEffect(() => {
         const fetchAlbumDetails = async () => {

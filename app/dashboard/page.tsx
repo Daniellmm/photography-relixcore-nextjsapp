@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 interface Album {
   _id: string;
   name: string;
+  price: number;
   eventDate: string;
   thumbnailUrl: string;
   isPaid: boolean;
@@ -22,6 +23,7 @@ interface Album {
 interface AlbumFromAPI {
   _id: string;
   title: string;
+  price: number;
   eventDate: string;
   eventType: string;
   paid: boolean;
@@ -47,6 +49,7 @@ export default function Dashboard() {
         const formatted = data.map((album) => ({
           _id: album._id,
           name: album.title,
+          price: album.price,
           eventDate: album.eventDate,
           eventType: album.eventType,
           isPaid: album.paid,
@@ -113,14 +116,21 @@ export default function Dashboard() {
 
               <CardContent className="p-6">
                 <div className="space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-black line-clamp-2">
-                      {album.name}
-                    </h3>
-                    <Badge variant="outline" className="mt-2 text-black/40 border-black/401">
-                      {album.eventType}
-                    </Badge>
+                  <div className='flex justify-between items-end'>
+                    <div>
+                      <h3 className="text-lg font-medium text-black line-clamp-2">
+                        {album.name}
+                      </h3>
+                      <Badge variant="outline" className="mt-2 text-black/40 border-black/401">
+                        {album.eventType}
+                      </Badge>
+                    </div>
+
+                    <div className='font-semibold'>
+                      <h2>₦{album.price.toLocaleString()}</h2>
+                    </div>
                   </div>
+
 
                   <div className="flex items-center text-muted-foreground">
                     <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />

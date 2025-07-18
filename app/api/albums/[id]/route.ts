@@ -88,6 +88,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             id: album._id.toString(),
             title: album.title,
             description: album.description,
+            price: album.price,
             eventDate: album.eventDate?.toISOString() || null,
             eventType: album.eventType,
             isVisible: album.isVisible,
