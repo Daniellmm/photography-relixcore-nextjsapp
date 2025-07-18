@@ -142,7 +142,7 @@ export default function AlbumViewer() {
                         <Skeleton className="h-10 w-10 rounded-md" />
                         <Skeleton className="h-8 w-48" />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[...Array(4)].map((_, i) => (
                             <Card key={i} className="h-72 w-60">
                                 <CardHeader>

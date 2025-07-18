@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Album } from '@/models/Album';
 import { isValidObjectId } from 'mongoose';
+import  '@/models/Image';
 
 export async function GET() {
   try {
