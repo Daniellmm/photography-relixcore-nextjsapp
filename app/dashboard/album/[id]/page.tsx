@@ -31,6 +31,8 @@ export default function AlbumViewer() {
     const router = useRouter();
 
     const [images, setImages] = useState<Image[]>([]);
+    const [loading, setLoading] = useState(true);
+     const [error, setError] = useState<string | null>(null);
     const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
     const [viewingImageIndex, setViewingImageIndex] = useState<number | null>(null);
 
@@ -101,6 +103,34 @@ export default function AlbumViewer() {
             toast("Error", { description: "Something went wrong saving your selections." });
         }
     };
+
+
+   useEffect(() => {
+    const fetchAlbumDetails = async () => {
+        try {
+            setLoading(true);
+
+            const albumRes = await fetch(`/api/albums/${albumId}/select`);
+            if (!albumRes.ok) {
+                const errorData = await albumRes.json();
+                throw new Error(errorData.error || 'Failed to fetch album');
+            }
+
+            const selectionData = await albumRes.json();
+            const selected = selectionData.selectedImageIds || [];
+            setSelectedImages(new Set(selected)); 
+
+        } catch (err) {
+            console.error('Fetch error:', err);
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchAlbumDetails();
+}, [albumId]);
+
 
     return (
         <div className="h-screen">

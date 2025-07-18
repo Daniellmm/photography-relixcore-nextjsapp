@@ -68,14 +68,14 @@ export default function AdminAlbumDetailPage() {
 
                 const [albumRes, selectionsRes] = await Promise.all([
                     fetch(`/api/albums/${albumId}`),
-                    fetch(`/api/albums/${albumId}/select`)
+                    fetch(`/api/albums/${albumId}/selections`)
                 ]);
 
                 if (!albumRes.ok) {
                     const errorData = await albumRes.json();
                     throw new Error(errorData.error || 'Failed to fetch album');
                 }
-
+ 
                 if (!selectionsRes.ok) {
                     const errorData = await selectionsRes.json();
                     throw new Error(errorData.error || 'Failed to fetch selections');

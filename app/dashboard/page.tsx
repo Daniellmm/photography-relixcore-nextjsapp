@@ -66,9 +66,28 @@ export default function Dashboard() {
   }, []);
 
 
-  const handlePayment = (albumId: string) => {
-    console.log(`Initiating payment for album ${albumId}`);
+  const handlePayment = async (albumId: string) => {
+    try {
+      const res = await fetch('/api/payments/initiate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ albumId }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Payment initiation failed');
+      }
+
+      // Redirect to Paystack checkout URL
+      window.location.href = data.authorization_url;
+    } catch (err: any) {
+      console.error(err);
+      toast('Payment failed', { description: err.message });
+    }
   };
+
 
   const handleDownload = (albumId: string) => {
     console.log(`Downloading album ${albumId}`);
