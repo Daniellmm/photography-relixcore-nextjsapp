@@ -136,25 +136,25 @@ export default function AlbumViewer() {
 
 
     if (loading) {
-            return (
-                <div className="container mx-auto p-6 space-y-6">
-                    <div className="flex items-center space-x-4">
-                        <Skeleton className="h-10 w-10 rounded-md" />
-                        <Skeleton className="h-8 w-48" />
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {[...Array(4)].map((_, i) => (
-                            <Card key={i} className="h-72 md:w-60">
-                                <CardHeader>
-                                    <Skeleton className="h-4 w-24" />
-                                    <Skeleton className="h-6 w-32" />
-                                </CardHeader>
-                            </Card>
-                        ))}
-                    </div>
+        return (
+            <div className="container mx-auto p-6 space-y-6">
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-10 w-10 rounded-md" />
+                    <Skeleton className="h-8 w-48" />
                 </div>
-            );
-        }
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {[...Array(4)].map((_, i) => (
+                        <Card key={i} className="h-72 md:w-60">
+                            <CardHeader>
+                                <Skeleton className="h-4 w-24" />
+                                <Skeleton className="h-6 w-32" />
+                            </CardHeader>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
 
     if (error) {

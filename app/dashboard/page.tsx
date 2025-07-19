@@ -27,7 +27,7 @@ interface AlbumFromAPI {
   eventDate: string;
   eventType: string;
   paid: boolean;
-  images?: { url: string }[];
+  images?: { url: string;  watermarkUrl: string; }[];
 }
 
 
@@ -54,7 +54,9 @@ export default function Dashboard() {
           eventType: album.eventType,
           isPaid: album.paid,
           photoCount: album.images?.length || 0,
-          thumbnailUrl: album.images?.[0]?.url ?? '/placeholder.jpg',
+          thumbnailUrl: album.paid
+            ? album.images?.[0]?.url ?? '/placeholder.jpg'
+            : album.images?.[0]?.watermarkUrl ?? '/placeholder.jpg',
 
         }));
 
@@ -89,9 +91,30 @@ export default function Dashboard() {
   };
 
 
-  const handleDownload = (albumId: string) => {
-    console.log(`Downloading album ${albumId}`);
+  const handleDownload = async (albumId: string) => {
+    try {
+      const res = await fetch(`/api/albums/${albumId}/download`);
+
+      if (!res.ok) {
+        throw new Error('Download failed');
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `album_${albumId}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error downloading album:', err);
+      toast.error('Failed to download album');
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-gallery-bg">

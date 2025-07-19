@@ -83,7 +83,22 @@ export async function GET() {
     }).populate('images');
     console.log('Albums found:', JSON.stringify(albums, null, 2));
 
-    return NextResponse.json(albums);
+    const formatted = albums.map(album => ({
+      _id: album._id,
+      title: album.title,
+      price: album.price,
+      eventDate: album.eventDate,
+      eventType: album.eventType,
+      paid: album.paid,
+      images: album.images.map((img: any) => ({
+        url: album.paid ? img.url : img.watermarkUrl,
+        watermarkUrl: img.watermarkUrl, 
+      })),
+    }));
+
+    return NextResponse.json(formatted);
+
+    // return NextResponse.json(albums);
   } catch (error) {
     console.error('GET albums failed:', error);
     return NextResponse.json({ error: 'Failed to fetch albums' }, { status: 500 });

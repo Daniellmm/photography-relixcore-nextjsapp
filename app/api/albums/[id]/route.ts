@@ -96,7 +96,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             totalImages: album.images?.length || 0,
             images: (album.images || []).map((img: IImage) => ({
                 _id: img._id.toString(),
-                url: img.url,
+                url: album.paid ? img.url : img.watermarkUrl,
                 public_id: img.public_id,
                 watermarkUrl: img.watermarkUrl,
                 visible: img.visible,
