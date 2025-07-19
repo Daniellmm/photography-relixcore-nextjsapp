@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Album } from '@/models/Album';
 import { User } from '@/models/User';
+import { IImage } from '@/models/Image';
 
 
 export async function POST(req: Request) {
@@ -90,9 +91,9 @@ export async function GET() {
       eventDate: album.eventDate,
       eventType: album.eventType,
       paid: album.paid,
-      images: album.images.map((img: any) => ({
+      images: (album.images as IImage[]).map((img) => ({
         url: album.paid ? img.url : img.watermarkUrl,
-        watermarkUrl: img.watermarkUrl, 
+        watermarkUrl: img.watermarkUrl,
       })),
     }));
 
