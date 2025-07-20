@@ -9,14 +9,11 @@ import fetch from 'node-fetch';
 import { Types } from 'mongoose';
 import { Readable } from 'stream';
 
-
-
-
 export const runtime = 'nodejs';
 
 export async function GET(
     req: NextRequest,
-    context: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ): Promise<Response> {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -25,7 +22,10 @@ export async function GET(
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }
 
-    const album = await Album.findById(context.params.id).populate('images');
+    // Await the params Promise
+    const params = await context.params;
+    const album = await Album.findById(params.id).populate('images');
+    
     if (!album) {
         return new Response(JSON.stringify({ error: 'Album not found' }), { status: 404 });
     }
@@ -69,5 +69,4 @@ export async function GET(
             'Content-Disposition': `attachment; filename="${album.title.replace(/\s+/g, '_')}.zip"`,
         },
     });
-
 }
